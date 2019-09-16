@@ -13,24 +13,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class Login extends AppCompatActivity {
 
     private EditText editTextUsername;
     private EditText editTextPassword;
     private Button btnLogin;
-    private String username;
-    private String password;
+    //private Button btnRegister;
+    private HashMap<String, String> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password");
+        user = (HashMap<String, String>) getIntent().getSerializableExtra("user");
         editTextUsername = findViewById(R.id.username);
         editTextPassword = findViewById(R.id.password);
         btnLogin = findViewById(R.id.btn_login);
+        //btnRegister = findViewById(R.id.btn_register);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,12 +44,26 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+        /*
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, Registration.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+         */
     }
 
     private void login() {
-        if(username.equalsIgnoreCase(editTextUsername.getText().toString()) && password.equalsIgnoreCase(editTextPassword.getText().toString())){
+        if(user.get("username").equalsIgnoreCase(editTextUsername.getText().toString()) && user.get("password").equalsIgnoreCase(editTextPassword.getText().toString())){
             Intent intent = new Intent(Login.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("user", user);
             startActivity(intent);
         } else {
             Toast.makeText(Login.this, "Incorrect Login Details", Toast.LENGTH_LONG).show();

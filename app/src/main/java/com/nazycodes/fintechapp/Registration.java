@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import java.nio.file.ReadOnlyFileSystemException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -34,6 +36,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     private Button btnRegister;
     private String genderSelected;
     private SharedPreferences preferences;
+    private HashMap<String, String> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +59,26 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         if(preferences.contains("username")){
             Intent intent = new Intent(Registration.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            String firstName = preferences.getString("firstName", "");
+            String lastName = preferences.getString("lastName", "");
+            String email = preferences.getString("email", "");
+            String age = preferences.getString("age", "");
             String username = preferences.getString("username", "");
             String password = preferences.getString("password", "");
-            intent.putExtra("username", username);
-            intent.putExtra("password", password);
+            String gender = preferences.getString("gender", "");
+            String phone = preferences.getString("phone", "");
+
+            user = new HashMap<>();
+            user.put("firstname", firstName);
+            user.put("lastname", lastName);
+            user.put("email", email);
+            user.put("age", age);
+            user.put("username", username);
+            user.put("password", password);
+            user.put("gender", gender);
+            user.put("phone", phone);
+            intent.putExtra("user", user);
             startActivity(intent);
         }
 
@@ -78,6 +97,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
                         Intent intent = new Intent(Registration.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("user", user);
                         startActivity(intent);
                     }
                 } else {
