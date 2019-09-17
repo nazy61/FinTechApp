@@ -43,6 +43,8 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        genderSelected = "Male";
+
         gender = findViewById(R.id.gender);
         firstName = findViewById(R.id.first_name);
         lastName = findViewById(R.id.last_name);
@@ -60,24 +62,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             Intent intent = new Intent(Registration.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-            String firstName = preferences.getString("firstName", "");
-            String lastName = preferences.getString("lastName", "");
-            String email = preferences.getString("email", "");
-            String age = preferences.getString("age", "");
-            String username = preferences.getString("username", "");
-            String password = preferences.getString("password", "");
-            String gender = preferences.getString("gender", "");
-            String phone = preferences.getString("phone", "");
-
-            user = new HashMap<>();
-            user.put("firstname", firstName);
-            user.put("lastname", lastName);
-            user.put("email", email);
-            user.put("age", age);
-            user.put("username", username);
-            user.put("password", password);
-            user.put("gender", gender);
-            user.put("phone", phone);
+            getUserDetails();
             intent.putExtra("user", user);
             startActivity(intent);
         }
@@ -94,6 +79,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                         Toast.makeText(Registration.this, "Passwords do not match", Toast.LENGTH_LONG).show();
                     } else {
                         registerUser();
+                        getUserDetails();
 
                         Intent intent = new Intent(Registration.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -117,6 +103,27 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
         gender.setAdapter(dataAdapter);
 
+    }
+
+    private void getUserDetails() {
+        String firstName = preferences.getString("firstName", "");
+        String lastName = preferences.getString("lastName", "");
+        String email = preferences.getString("email", "");
+        String age = preferences.getString("age", "");
+        String username = preferences.getString("username", "");
+        String password = preferences.getString("password", "");
+        String gender = preferences.getString("gender", "");
+        String phone = preferences.getString("phone", "");
+
+        user = new HashMap<>();
+        user.put("firstname", firstName);
+        user.put("lastname", lastName);
+        user.put("email", email);
+        user.put("age", age);
+        user.put("username", username);
+        user.put("password", password);
+        user.put("gender", gender);
+        user.put("phone", phone);
     }
 
     @Override
